@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "profile-manager-service"
+version = "0.1.0"
+description = "A Python FastAPI Service for for password and language setup"
+authors = ["Ayush Pandey <ayush.pandey@tier.app>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.10.8"
+fastapi = "^0.110.2"
+uvicorn = "^0.29.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
