@@ -1,11 +1,11 @@
-FROM python:3.10-buster
+FROM python:3.10.8-buster
 
 WORKDIR /opt/profile-mananger-service
 
 COPY poetry.lock pyproject.toml ./
 
 RUN pip install --upgrade pip && \
-    pip install "poetry==1.1.11" && \
+    pip install "poetry==1.6.1" && \
     poetry config virtualenvs.create false && \
     poetry install
 
