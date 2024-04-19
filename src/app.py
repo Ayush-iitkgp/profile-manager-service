@@ -1,3 +1,4 @@
+import os
 import logging
 from fastapi import FastAPI
 from src import settings
@@ -9,9 +10,8 @@ logger = logging.getLogger(__name__)
 app = FastAPI(
     title=settings.TITLE,
     description=settings.DESCRIPTION,
-    debug=settings.DEBUG,
-    docs_url='/docs' if settings.DEBUG else None,
-    redoc_url='/redoc' if settings.DEBUG else None,
+    docs_url='/docs',
+    redoc_url='/redoc',
 )
 
 
@@ -19,12 +19,15 @@ app = FastAPI(
 async def startup():
     logger.info("startup: Starting the app")
 
+
 @app.get("/")
 def hello():
-    return "hello"
+    return {
+        "message": "Hello World!"
+    }
 
 
 # app.include_router(pnl_router, prefix='/pnl')
 # app.include_router(debug_router, prefix='/debug')
 
-# BASE_DIR = os.path.dirname(__file__)
+BASE_DIR = os.path.dirname(__file__)

@@ -23,7 +23,7 @@ services:
     depends_on:
       - postgres
     env_file:
-      - .env
+      - .env.docker
 
   postgres:
     image: postgres:12.7
