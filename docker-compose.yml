@@ -1,0 +1,39 @@
+---
+version: "3"
+
+volumes:
+  postgres_data:
+
+services:
+  app:
+    build: .
+    environment:
+      - APP_HOST
+      - APP_PORT
+      - DATABASE_URL=postgresql+asyncpg://postgres:postgres@postgres:5432/db
+      - DATABASE_NAME=db
+    expose:
+      - ${APP_PORT}
+    ports:
+      - ${APP_PORT}:${APP_PORT}
+    volumes:
+      - ./src:/opt/profile-mananger-service/src
+      - ./scripts:/opt/profile-mananger-service/scripts
+      - ./tests:/opt/profile-mananger-service/tests
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+
+  postgres:
+    image: postgres:12.7
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    expose:
+      - 5432
+    ports:
+      - 5432:5432
