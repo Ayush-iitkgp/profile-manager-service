@@ -1,7 +1,11 @@
+import uuid
+
 from fastapi import Depends, HTTPException, status
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from sqlalchemy.orm import Session
-from your_database_module import get_db, User  # Import your SQLAlchemy models and database session here
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+
+from src.db.errors import DoesNotExist
+from src.db.repositories.customer import CustomerRepository
+from src.db.session import async_session
 
 
 class BearerTokenAuth(HTTPBearer):
@@ -21,25 +25,22 @@ class BearerTokenAuth(HTTPBearer):
                 detail="Bearer token is missing.",
             )
 
-        token = credentials.credentials
-        user = self.get_user_by_token(token)
-        if not user:
+        customer_id = credentials.credentials
+        customer = self.get_customer_by_id(customer_id)
+        if not customer:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Invalid token or user not found.",
             )
+        return customer
 
-        return user
-
-    def get_user_by_token(self, token: str):
-        # Implement logic to fetch user by token from the database
-        # Assuming you have a User model with a field customer_id
-        # Also, assuming you have a function `get_db` to get the database session
-        db: Session = get_db()
-        user = db.query(User).filter(User.token == token).first()
-        if not user:
-            return None
-        return user if user.customer_id else None
+    async def get_customer_by_id(self, customer_id: str):
+        async with async_session():
+            try:
+                customer = CustomerRepository.get_by_customer_id(uuid.UUID(customer_id))
+            except DoesNotExist:
+                return None
+            return customer
 
 
 bearer_auth = BearerTokenAuth()

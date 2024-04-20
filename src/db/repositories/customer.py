@@ -1,8 +1,8 @@
 import logging
 from typing import Type
+from uuid import UUID
 
-import bcrypt
-
+from src.db.errors import DoesNotExist
 from src.db.repositories.base import BaseRepository
 from src.db.tables.customer import Customer
 from src.models.customer import CustomerSchema, InCustomerSchema
@@ -22,3 +22,17 @@ class CustomerRepository(BaseRepository):
     @property
     def _in_create_schema(self) -> Type[InCustomerSchema]:
         return InCustomerSchema
+
+    async def get_by_email(self, email: str) -> Type[CustomerSchema]:
+        entry = await self._db_session.get(self._table, email)
+        if not entry:
+            raise DoesNotExist(f"{self._table.__name__}<id:{email}> does not exist")
+        return self._db_schema.from_orm(entry)
+
+    async def get_by_customer_id(self, customer_id: UUID) -> Type[CustomerSchema]:
+        entry = await self._db_session.get(self._table, customer_id)
+        if not entry:
+            raise DoesNotExist(
+                f"{self._table.__name__}<id:{customer_id}> does not exist"
+            )
+        return self._db_schema.from_orm(entry)

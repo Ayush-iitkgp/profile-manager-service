@@ -1,6 +1,7 @@
+from typing import Any, Dict, Optional
+
 from fastapi import HTTPException
 from starlette import status
-from typing import Dict, Optional, Any
 
 
 class BaseError(HTTPException):
@@ -13,14 +14,17 @@ class CustomerError(BaseError):
 
 class CustomerNotFoundError(HTTPException):
     def __init__(self):
-        super().__init__(status_code=status.HTTP_404_NOT_FOUND, detail="Customer not found")
+        super().__init__(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Customer not found"
+        )
 
 
 class CustomerPasswordNotUpdatedError(CustomerError):
     def __init__(self):
         super().__init__(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Customer password could not be updated")
+            detail="Customer password could not be updated",
+        )
 
 
 class HTTPUnauthorizedError(HTTPException):
@@ -29,7 +33,9 @@ class HTTPUnauthorizedError(HTTPException):
         detail: str = "HTTP unauthorized error",
         headers: Optional[Dict[str, Any]] = None,
     ):
-        super().__init__(status_code=status.HTTP_401_UNAUTHORIZED, detail=detail, headers=headers)
+        super().__init__(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail=detail, headers=headers
+        )
 
 
 class HTTPUnprocessableEntityError(HTTPException):
@@ -38,4 +44,8 @@ class HTTPUnprocessableEntityError(HTTPException):
         detail: str = "Passwords do not match",
         headers: Optional[Dict[str, Any]] = None,
     ):
-        super().__init__(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=detail, headers=headers)
+        super().__init__(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=detail,
+            headers=headers,
+        )

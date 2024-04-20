@@ -1,5 +1,6 @@
 from typing import List
 from uuid import UUID
+
 from src.models.base_model import BaseSchema
 from src.models.customer import CustomerSchema
 
@@ -9,7 +10,7 @@ class OutSetPasswordSchema(BaseSchema):
 
 
 class OutDataSetPasswordSchema(BaseSchema):
-    data = OutSetPasswordSchema
+    data: OutSetPasswordSchema
 
 
 class OutCustomerSchema(BaseSchema):
