@@ -38,15 +38,12 @@ The application is accessible at <http://localhost:3000>.
 ```bash
 docker-compose up -d
 ```
-2. Exec into the postgres docker container
+2. Exec into the postgres docker container and connect to the database
 ```bash
-docker-compose run postgres bash
+docker-compose exec postgres psql -U postgres -d db
 ```
-3. Connect to the db database
-```bash
-psql -U postgres -d db
-```
-4.Run the SQL script in [create_table.sql](scripts/create_table.sql) file located in the db folder
+
+3.Run the SQL script in [create_table.sql](scripts/create_table.sql) file located in the db folder
 
 ### Insert data in the tables
 
@@ -56,7 +53,7 @@ docker-compose up -d
 ```
 2. Exec into the docker container
 ```bash
-docker-compose run app bash
+docker-compose exec app bash
 ```
 3. Change the working directory to `scripts` directory
 ```bash
@@ -83,7 +80,7 @@ poetry run pytest
 ## Further Improvements
 1. Write (more) tests
 2. Implement git pre-commit hooks (DONE)
-3. Use alembic for database migration
+3. Use alembic for database migration (it's not working at present)
 4. Set upo CI/CD Pipeline
 5. Set up deployment
 
