@@ -6,6 +6,7 @@ from src.db.errors import DoesNotExist
 from src.db.repositories.customer import CustomerRepository
 from src.exceptions.customer import (
     CustomerNotFoundError,
+    CustomerPasswordIncorrectError,
     CustomerPasswordNotUpdatedError,
 )
 from src.models.schema.in_customer import (
@@ -35,9 +36,15 @@ class CustomerService:
         customer_repository = CustomerRepository(db_session=db)
         try:
             customer = await customer_repository.get_by_email(email=password_data.email)
+            logger.info(
+                f"set_customer_password: Customer found with email: {password_data.email}"
+            )
         except DoesNotExist:
+            logger.error(
+                f"set_customer_password: Customer not found with email: {password_data.email}"
+            )
             raise CustomerNotFoundError
-        customer.set_password(password_data.password)
+        customer.set_hashed_password(password_data.password)
         try:
             await customer_repository.update(customer.customer_id, customer.dict())
             logger.info(f"Customer {customer.email} password created")
@@ -61,19 +68,12 @@ class CustomerService:
             customer = await customer_repository.get_by_email(email=password_data.email)
         except DoesNotExist:
             raise CustomerNotFoundError
-        # TODO: Implement the logic here
-        # customer.set_password(password_data.password)
-        # try:
-        #     await customer_repository.update(customer.customer_id, customer.dict())
-        #     logger.info(f"Customer {customer.email} password created")
-        # except DoesNotExist:
-        #     raise CustomerPasswordNotUpdatedError
-
-        return OutDataLoginSchema(
-            data=OutLoginSchema(
-                customer_id=customer.customer_id, language=customer.language
+        if customer.is_password_correct(password_data.password):
+            return OutDataLoginSchema(
+                data=OutLoginSchema(customer_id=customer.id, language=customer.language)
             )
-        )
+        else:
+            raise CustomerPasswordIncorrectError
 
     @classmethod
     async def change_customer_language(

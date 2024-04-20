@@ -17,6 +17,13 @@ class CustomerNotFoundError(CustomerError):
         )
 
 
+class CustomerPasswordIncorrectError(CustomerError):
+    def __init__(self):
+        super().__init__(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect password"
+        )
+
+
 class CustomerPasswordNotUpdatedError(CustomerError):
     def __init__(self):
         super().__init__(

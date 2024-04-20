@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from starlette import status
 
-from src.auth.bearer_token_auth import bearer_auth
+from src.auth.jwt_token_auth import jwt_token_auth
 from src.auth.verify_client import verify_client_version
 from src.db.session import async_session
 from src.models.schema.in_customer import (
@@ -26,7 +26,7 @@ router = APIRouter()
 )
 async def create_password(
     password_data: InSetPasswordSchema,
-    _: str = Depends(bearer_auth),
+    _: str = Depends(jwt_token_auth),
     _client_verified: None = Depends(verify_client_version),
 ) -> OutDataSetPasswordSchema:
     async with async_session() as db:
@@ -40,7 +40,6 @@ async def create_password(
 )
 async def login(
     login_data: InLoginSchema,
-    _: str = Depends(bearer_auth),
     _client_verified: None = Depends(verify_client_version),
 ) -> OutDataLoginSchema:
     async with async_session() as db:
@@ -54,7 +53,7 @@ async def login(
 )
 async def change_language(
     request_data: InChangePasswordSchema,
-    _: str = Depends(bearer_auth),
+    _: str = Depends(jwt_token_auth),
     _client_verified: None = Depends(verify_client_version),
 ) -> OutDataChangePasswordSchema:
     async with async_session() as db:

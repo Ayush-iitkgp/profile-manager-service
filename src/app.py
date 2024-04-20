@@ -23,7 +23,8 @@ async def startup():
 
 
 @app.get("/")
-async def debug():
+async def test():
+    logger.info("debug: testing the app")
     return "profile-manager-service is running"
 
 
