@@ -32,6 +32,8 @@ docker compose up -d
 
 The application is accessible at <http://localhost:3000>.
 
+You can also access the API definitons at <http://localhost:3000/docs>
+
 ### Create tables
 
 1. Start the containers

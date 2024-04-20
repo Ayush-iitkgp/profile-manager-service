@@ -1,7 +1,8 @@
 from pydantic import validator
 
-from src.models.base_model import BaseSchema
 from src.exceptions.core import HTTPUnprocessableEntityError
+from src.models.base_model import BaseSchema
+
 
 class InSetPasswordSchema(BaseSchema):
     email: str
