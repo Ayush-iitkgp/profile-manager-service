@@ -1,5 +1,4 @@
 import abc
-import uuid
 from typing import List, Type, TypeVar, Union
 from uuid import UUID
 
@@ -36,11 +35,6 @@ class BaseRepository(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def _db_schema(self) -> Type[SCHEMA]:
         pass
-
-    def _preprocess_create(self, values: dict) -> dict:
-        values["id"] = uuid.uuid4()
-
-        return values
 
     async def create(self, values: Union[SCHEMA, dict], commit: bool = True) -> SCHEMA:
         if isinstance(values, dict):

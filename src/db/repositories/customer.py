@@ -2,6 +2,8 @@ import logging
 from typing import Type
 from uuid import UUID
 
+from sqlalchemy import select
+
 from src.db.errors import DoesNotExist
 from src.db.repositories.base import BaseRepository
 from src.db.tables.customer import Customer
@@ -24,13 +26,17 @@ class CustomerRepository(BaseRepository):
         return InCustomerSchema
 
     async def get_by_email(self, email: str) -> Type[CustomerSchema]:
-        entry = await self._db_session.get(self._table, email)
+        stmt = select(self._table).where(self._table.email == email)
+        results = await self._db_session.execute(stmt)
+        entry = results.scalars().first()
         if not entry:
             raise DoesNotExist(f"{self._table.__name__}<id:{email}> does not exist")
         return self._db_schema.from_orm(entry)
 
     async def get_by_customer_id(self, customer_id: UUID) -> Type[CustomerSchema]:
-        entry = await self._db_session.get(self._table, customer_id)
+        stmt = select(self._table).where(self._table.customer_id == customer_id)
+        results = await self._db_session.execute(stmt)
+        entry = results.scalars().first()
         if not entry:
             raise DoesNotExist(
                 f"{self._table.__name__}<id:{customer_id}> does not exist"

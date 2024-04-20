@@ -28,12 +28,19 @@ class CustomerSchema(CustomerSchemaBase):
     def set_hashed_password(self, password: str):
         self.hashed_password = bcrypt.hashpw(
             password.encode("utf-8"), bcrypt.gensalt()
+        ).decode(
+            "utf-8"
         )  # TODO: research the library
         # for the password encryption
 
     def is_password_correct(self, input_password: str):
+        if isinstance(self.hashed_password, str):
+            hashed_password_bytes = self.hashed_password.encode("utf-8")
+        else:
+            hashed_password_bytes = self.hashed_password
+
         input_password_bytes = input_password.encode("utf-8")
-        return bcrypt.checkpw(input_password_bytes, self.hashed_password)
+        return bcrypt.checkpw(input_password_bytes, hashed_password_bytes)
 
     # TODO: Add validation for the password
     # @validator('hashed_password')

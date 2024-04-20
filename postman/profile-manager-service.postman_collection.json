@@ -1,0 +1,255 @@
+{
+	"info": {
+		"_postman_id": "4c54807b-d147-47d3-b49d-9fbfe81e69a2",
+		"name": "profile-manager-service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3648685"
+	},
+	"item": [
+		{
+			"name": "test",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create-passowrd",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "client-version",
+						"value": "{{clientVersion}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"osefhhchnsic@protonmail.com\",\n    \"password\": \"1234\",\n    \"confirm_password\": \"1234\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/customer/create-password",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"customer",
+						"create-password"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Passwords do not match",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "client-version",
+								"value": "2.1.1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"osefhhchnsic@protonmail.com\",\n    \"password\": \"1234\",\n    \"confirm_password\": \"12345\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/customer/create-password",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"customer",
+								"create-password"
+							]
+						}
+					},
+					"status": "Unprocessable Entity",
+					"code": 422,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "date",
+							"value": "Sat, 20 Apr 2024 21:30:50 GMT"
+						},
+						{
+							"key": "server",
+							"value": "uvicorn"
+						},
+						{
+							"key": "content-length",
+							"value": "177"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"detail\": [\n        {\n            \"type\": \"missing\",\n            \"loc\": [\n                \"query\",\n                \"scheme\"\n            ],\n            \"msg\": \"Field required\",\n            \"input\": null\n        },\n        {\n            \"type\": \"missing\",\n            \"loc\": [\n                \"query\",\n                \"credentials\"\n            ],\n            \"msg\": \"Field required\",\n            \"input\": null\n        }\n    ]\n}"
+				},
+				{
+					"name": "Password creation successful",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "client-version",
+								"value": "2.1.1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"osefhhchnsic@protonmail.com\",\n    \"password\": \"1234\",\n    \"confirm_password\": \"1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/customer/create-password",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"customer",
+								"create-password"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "date",
+							"value": "Sat, 20 Apr 2024 23:40:24 GMT"
+						},
+						{
+							"key": "server",
+							"value": "uvicorn"
+						},
+						{
+							"key": "content-length",
+							"value": "108"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"message\": \"Customer password has been set successfully for customer osefhhchnsic@protonmail.com.\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "login",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "client-version",
+						"value": "{{clientVersion}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"osefhhchnsic@protonmail.com\",\n    \"password\": \"1234\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/customer/login",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"customer",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcl9pZCI6IjA2YzJhY2FjLTc4MTAtNGRkOC04NzIyLTU0YmRiMDVmYjllNCIsImV4cCI6MTcxNDMwMjc1Mn0.PrGC9-1lfwVPmTkVIT9cJ4z-9nF78g4mm6quMeN6T3c",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "localhost:3000"
+		},
+		{
+			"key": "cutomer_id",
+			"value": "06c2acac-7810-4dd8-8722-54bdb05fb9e4"
+		},
+		{
+			"key": "clientVersion",
+			"value": "2.1.1"
+		}
+	]
+}

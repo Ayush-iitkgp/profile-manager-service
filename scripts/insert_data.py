@@ -44,4 +44,5 @@ async def main():
 
 
 # At the end of the insertion, we have around 99761 records in the table.
+
 aw(main())

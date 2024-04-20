@@ -11,14 +11,15 @@ async def create_access_token(customer_id: uuid, valid_time: Optional[int] = Non
     """
     :param customer_id: we only use customer_id for the jwt token encoding # TODO: Research why can't I used email,
     customer_id and language for the jwt token generation
-    :param valid_time: by default our JWT token will be valid forever
+    :param valid_time: by default our JWT token will be valid for 3 days (of courrse reduce it to 15
+    minutes or something, keeping it for testing purpose)
     :return:
     """
     to_encode = {"customer_id": customer_id}
     if valid_time:
         expire = datetime.utcnow() + timedelta(minutes=valid_time)
     else:
-        expire = datetime.utcnow()
+        expire = datetime.utcnow() + timedelta(minutes=10800)  # 3 days
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(
         to_encode, settings.SECRET_KEY, algorithm="HS256"
