@@ -20,7 +20,8 @@ class HTTPUnauthorizedError(HTTPException):
 class HTTPForbiddenError(HTTPException):
     def __init__(
         self,
-        detail: str = f"Client version less than {settings.REQUIRED_VERSION} is not supported. Please update your client.",
+        detail: str = f"Client version less than {settings.REQUIRED_VERSION} is not supported. "
+        f"Please update your client.",
         headers: Optional[Dict[str, Any]] = None,
     ):
         super().__init__(

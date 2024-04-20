@@ -1,4 +1,6 @@
-from pydantic import Enum, validator
+from enum import Enum
+
+from pydantic import validator
 
 from src.exceptions.core import HTTPUnprocessableEntityError
 from src.models.base_model import BaseSchema
