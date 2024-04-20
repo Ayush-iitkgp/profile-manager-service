@@ -1,5 +1,4 @@
 import logging
-from uuid import UUID
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -9,8 +8,13 @@ from src.exceptions.customer import (
     CustomerNotFoundError,
     CustomerPasswordNotUpdatedError,
 )
-from src.models.schema.in_customer import InLoginSchema, InSetPasswordSchema
+from src.models.schema.in_customer import (
+    InChangePasswordSchema,
+    InLoginSchema,
+    InSetPasswordSchema,
+)
 from src.models.schema.out_customer import (
+    OutDataChangePasswordSchema,
     OutDataLoginSchema,
     OutDataSetPasswordSchema,
     OutLoginSchema,
@@ -52,11 +56,12 @@ class CustomerService:
         db: AsyncSession,
         password_data: InLoginSchema,
     ) -> OutDataLoginSchema:
-        # customer_repository = CustomerRepository(db_session=db)
-        # try:
-        #     customer = await customer_repository.get_by_email(email=password_data.email)
-        # except DoesNotExist:
-        #     raise CustomerNotFoundError
+        customer_repository = CustomerRepository(db_session=db)
+        try:
+            customer = await customer_repository.get_by_email(email=password_data.email)
+        except DoesNotExist:
+            raise CustomerNotFoundError
+        # TODO: Implement the logic here
         # customer.set_password(password_data.password)
         # try:
         #     await customer_repository.update(customer.customer_id, customer.dict())
@@ -66,26 +71,14 @@ class CustomerService:
 
         return OutDataLoginSchema(
             data=OutLoginSchema(
-                message=f"Login successful for the customer {password_data.email}"
+                customer_id=customer.customer_id, language=customer.language
             )
         )
 
     @classmethod
-    async def delete_customer_by_currency_id(
+    async def change_customer_language(
         cls,
         db: AsyncSession,
-        customer_id: UUID,
-    ) -> None:
-        customer_repository = CustomerRepository(db_session=db)
-        try:
-            customer = await customer_repository.get_by_id(entry_id=customer_id)
-        except DoesNotExist:
-            raise CustomerNotFoundError
-        logger.info(customer)
-
-        # try:
-        #     await customer_repository.delete_cus_by_currency_id(currency_id=currency.id)
-        #     await db.commit()
-        # except Exception:
-        #     await db.rollback()
-        #     raise CustomerPasswordNotUpdatedError
+        customer_id: InChangePasswordSchema,
+    ) -> OutDataChangePasswordSchema:
+        pass  # TODO: Implement the logic here

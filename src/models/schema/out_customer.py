@@ -10,7 +10,8 @@ class OutSetPasswordSchema(BaseSchema):
 
 
 class OutLoginSchema(BaseSchema):
-    message: str
+    customer_id: str
+    language: str
 
 
 class OutDataSetPasswordSchema(BaseSchema):
@@ -29,3 +30,11 @@ class OutCustomerSchema(BaseSchema):
 
 class OutDataPnlSchema(BaseSchema):
     data: OutCustomerSchema
+
+
+class OutChangePasswordSchema(BaseSchema):
+    message: str
+
+
+class OutDataChangePasswordSchema(BaseSchema):
+    data: OutChangePasswordSchema
