@@ -1,12 +1,24 @@
-from sqlalchemy import Column, String, Integer, ForeignKey, Date, Numeric
-from src.db.base_class import Base
+# import uuid
+
+from sqlalchemy import Column, Enum, Index, String, Text
 from sqlalchemy.dialects.postgresql import UUID
-import uuid
+
+from src.db.base_class import Base
 
 
 class Customer(Base):
     __tablename__ = "customer"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    currency_code = Column(String(3), nullable=False)
+    customer_id = Column(UUID(as_uuid=True), primary_key=True)
+    email = Column(String(255), nullable=False, unique=True)
+    country = Column(String(2), nullable=False, unique=False)
+    language = Column(
+        Enum("en", "de", name="language_types"), nullable=False, unique=False
+    )  # name=
+    # 'language_types': This is an optional parameter that names the ENUM
+    # type in PostgreSQL making it easier to manage in the database if needed.
+    hashed_password = Column(Text, nullable=False, unique=False)
 
+
+# Define the index on the email field
+Index("idx_customers_email", Customer.email)

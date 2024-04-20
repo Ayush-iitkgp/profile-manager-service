@@ -1,6 +1,10 @@
-from fastapi import APIRouter, Depends
+# import uuid
+
+from fastapi import APIRouter
+
+# Depends
 from starlette import status
-import uuid
+
 # from src.models.schema.out_pnl import OutDataPnlSchema
 # from src.db.session import async_session
 # from src.services.pnl_service import PnlService
