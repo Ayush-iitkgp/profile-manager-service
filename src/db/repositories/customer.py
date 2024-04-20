@@ -1,6 +1,8 @@
 import logging
 from typing import Type
 
+import bcrypt
+
 from src.db.repositories.base import BaseRepository
 from src.db.tables.customer import Customer
 from src.models.customer import CustomerSchema, InCustomerSchema

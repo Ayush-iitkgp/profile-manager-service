@@ -60,6 +60,12 @@ class BaseRepository(metaclass=abc.ABCMeta):
             raise DoesNotExist(f"{self._table.__name__}<id:{entry_id}> does not exist")
         return self._db_schema.from_orm(entry)
 
+    async def get_by_email(self, email: str) -> SCHEMA:
+        entry = await self._db_session.get(self._table, email)
+        if not entry:
+            raise DoesNotExist(f"{self._table.__name__}<id:{email}> does not exist")
+        return self._db_schema.from_orm(entry)
+
     async def list(self) -> List[SCHEMA]:
         stmt = select(self._table)
         results = await self._db_session.execute(stmt)
@@ -68,10 +74,10 @@ class BaseRepository(metaclass=abc.ABCMeta):
             return []
         return [self._db_schema.from_orm(entry) for entry in entries]
 
-    async def update(self, entry_id: UUID, values: Union[SCHEMA, dict]) -> SCHEMA:
+    async def update(self, customer_id: UUID, values: Union[SCHEMA, dict]) -> SCHEMA:
         stmt = (
             update(self._table)
-            .where(self._table.id == entry_id)
+            .where(self._table.customer_id == customer_id)
             .values(**dict(values))
             .returning(*self._table.__table__.columns)
         )
@@ -83,5 +89,5 @@ class BaseRepository(metaclass=abc.ABCMeta):
         results = await self._db_session.execute(orm_stmt)
         entry = results.first()
         if not entry:
-            raise DoesNotExist(f"{self._table.__name__}<id:{entry_id}> does not exist")
+            raise DoesNotExist(f"{self._table.__name__}<id:{customer_id}> does not exist")
         return self._db_schema.from_orm(entry[0])

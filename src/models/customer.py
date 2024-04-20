@@ -1,6 +1,7 @@
 from typing import Literal, Optional
 from uuid import UUID
 
+import bcrypt
 from pydantic import validator
 
 from src.models.base_model import BaseSchema
@@ -23,6 +24,9 @@ class CustomerSchemaBase(BaseSchema):
 
 class CustomerSchema(CustomerSchemaBase):
     hashed_password: str  # Intended for larger text content
+
+    def set_hashed_password(self, password: str):
+        self.hashed_password = bcrypt.hashpw(password, bcrypt.gensalt())
 
     # OPTIONAL: Add validation for the password
     # @validator('hashed_password')
