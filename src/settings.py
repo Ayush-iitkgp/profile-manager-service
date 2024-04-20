@@ -1,7 +1,7 @@
 from os import getenv
 
-TITLE = "FastAPI Python Service"
-DESCRIPTION = "Lighting fast Python API"
+TITLE = "Profile Manager Service for password and language setup"
+DESCRIPTION = "This services allows you to manage your password and language profiles."
 
 PORT = int(getenv("APP_PORT", "3000"))
 HOST = getenv("APP_HOST")
