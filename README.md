@@ -72,7 +72,7 @@ As pytest convention, all files matching `test_*.py` will be included.
 
 #### Running tests
 ```bash
-docker-compose run app bash
+docker-compose exec app bash
 poetry run pytest
 ```
 
