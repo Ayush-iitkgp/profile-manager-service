@@ -9,8 +9,16 @@ class OutSetPasswordSchema(BaseSchema):
     message: str
 
 
+class OutLoginSchema(BaseSchema):
+    message: str
+
+
 class OutDataSetPasswordSchema(BaseSchema):
     data: OutSetPasswordSchema
+
+
+class OutDataLoginSchema(BaseSchema):
+    data: OutLoginSchema
 
 
 class OutCustomerSchema(BaseSchema):

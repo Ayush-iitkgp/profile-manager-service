@@ -9,9 +9,11 @@ from src.exceptions.customer import (
     CustomerNotFoundError,
     CustomerPasswordNotUpdatedError,
 )
-from src.models.schema.in_customer import InSetPasswordSchema
+from src.models.schema.in_customer import InLoginSchema, InSetPasswordSchema
 from src.models.schema.out_customer import (
+    OutDataLoginSchema,
     OutDataSetPasswordSchema,
+    OutLoginSchema,
     OutSetPasswordSchema,
 )
 
@@ -40,7 +42,31 @@ class CustomerService:
 
         return OutDataSetPasswordSchema(
             data=OutSetPasswordSchema(
-                message="Customer password has been set successfully."
+                message=f"Customer password has been set successfully for customer {password_data.email}."
+            )
+        )
+
+    @classmethod
+    async def verify_customer_login(
+        cls,
+        db: AsyncSession,
+        password_data: InLoginSchema,
+    ) -> OutDataLoginSchema:
+        # customer_repository = CustomerRepository(db_session=db)
+        # try:
+        #     customer = await customer_repository.get_by_email(email=password_data.email)
+        # except DoesNotExist:
+        #     raise CustomerNotFoundError
+        # customer.set_password(password_data.password)
+        # try:
+        #     await customer_repository.update(customer.customer_id, customer.dict())
+        #     logger.info(f"Customer {customer.email} password created")
+        # except DoesNotExist:
+        #     raise CustomerPasswordNotUpdatedError
+
+        return OutDataLoginSchema(
+            data=OutLoginSchema(
+                message=f"Login successful for the customer {password_data.email}"
             )
         )
 

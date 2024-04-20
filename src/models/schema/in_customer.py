@@ -1,12 +1,7 @@
-from typing import List
-from uuid import UUID
-
 from pydantic import validator
 
-from src.exceptions.customer import HTTPUnprocessableEntityError
 from src.models.base_model import BaseSchema
-from src.models.customer import CustomerSchema
-
+from src.exceptions.core import HTTPUnprocessableEntityError
 
 class InSetPasswordSchema(BaseSchema):
     email: str
@@ -20,7 +15,6 @@ class InSetPasswordSchema(BaseSchema):
         return v
 
 
-class InCustomerSchema(BaseSchema):
-    id: UUID
-    currency_code: str
-    pnl: List[CustomerSchema]
+class InLoginSchema(BaseSchema):
+    email: str
+    password: str
