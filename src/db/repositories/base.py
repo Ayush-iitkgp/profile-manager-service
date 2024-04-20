@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Type, TypeVar, Union, List
 from src.models.base_model import BaseSchema
 from sqlalchemy import delete, select, update
-# from src.db.errors import DoesNotExist
+from src.db.errors import DoesNotExist
 from uuid import UUID
 
 import uuid
@@ -52,11 +52,11 @@ class BaseRepository(metaclass=abc.ABCMeta):
 
         return self._db_schema.from_orm(entry)
 
-    # async def get_by_id(self, entry_id: UUID) -> SCHEMA:
-    #     entry = await self._db_session.get(self._table, entry_id)
-    #     if not entry:
-    #         raise DoesNotExist(f"{self._table.__name__}<id:{entry_id}> does not exist")
-    #     return self._db_schema.from_orm(entry)
+    async def get_by_id(self, entry_id: UUID) -> SCHEMA:
+        entry = await self._db_session.get(self._table, entry_id)
+        if not entry:
+            raise DoesNotExist(f"{self._table.__name__}<id:{entry_id}> does not exist")
+        return self._db_schema.from_orm(entry)
 
     async def list(self) -> List[SCHEMA]:
         stmt = select(self._table)

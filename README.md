@@ -7,7 +7,7 @@ The design decisions of this service have been based on the discussion [here](ht
 
 ### Prerequisites
 
-Project requires python 3.10.8, pyenv, colima, docker, and poetry.
+Project requires python 3.10.8, pyenv, docker, docker-desktop and poetry.
 
 Install `pyenv` tool to manage python version.
 
@@ -21,15 +21,12 @@ brew link docker # optional
 # install docker-compose
 brew install docker-compose
 
-# install colima container run time
-brew install colima
 ```
 
 ### Running
 
 ```bash
 # via docker
-colima start
 docker compose up -d
 ```
 
@@ -76,8 +73,9 @@ poetry run pytest
 
 ## Further Improvements
 1. Write (more) tests
-2. Set upo CI/CD Pipeline
-3. Set up deployment
+2. Implement git pre-commit hooks
+3Set upo CI/CD Pipeline
+4. Set up deployment
 
 ## Ideas to explore
 1. Integrating Github workflows in the repository

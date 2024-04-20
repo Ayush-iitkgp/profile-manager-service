@@ -21,7 +21,7 @@ async def startup():
 
 @app.get("/")
 async def debug():
-    return "profile-manager-service is working"
+    return "profile-manager-service is running"
 
 
 app.include_router(customer_router, prefix='/v1/customer')
