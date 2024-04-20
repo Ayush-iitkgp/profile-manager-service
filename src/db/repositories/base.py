@@ -45,7 +45,7 @@ class BaseRepository(metaclass=abc.ABCMeta):
     async def create(self, values: Union[SCHEMA, dict], commit: bool = True) -> SCHEMA:
         if isinstance(values, dict):
             values = self._in_create_schema(**values)
-        dict_values = self._preprocess_create(values.dict())
+        dict_values = values.dict()
 
         entry = self._table(**dict_values)
         self._db_session.add(entry)

@@ -32,4 +32,5 @@ class CustomerSchema(CustomerSchemaBase):
     #     return value
 
 
-class InCustomerSchema(CustomerSchemaBase): ...
+class InCustomerSchema(CustomerSchemaBase):
+    hashed_password: str = ""

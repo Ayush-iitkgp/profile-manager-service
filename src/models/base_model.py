@@ -10,10 +10,10 @@ def convert_field_to_camel_case(string: str) -> str:
 
 class BaseModel(pydantic.BaseModel):
     class Config(pydantic.BaseConfig):
-        allow_population_by_field_name = True
+        populate_by_name = True
         alias_generator = convert_field_to_camel_case
 
 
 class BaseSchema(BaseModel):
     class Config(BaseModel.Config):
-        orm_mode = True
+        from_attributes = True

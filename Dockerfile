@@ -10,10 +10,10 @@ RUN pip install --upgrade pip && \
     poetry install
 
 COPY src src
-
 COPY scripts scripts
-
 COPY tests tests
+COPY alembic.ini ./
+COPY alembic alembic
 
 ENV PYTHONPATH /opt/profile-mananger-service
 
