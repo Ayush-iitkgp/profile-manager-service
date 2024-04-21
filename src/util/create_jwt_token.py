@@ -9,7 +9,7 @@ from src import settings
 
 async def create_access_token(customer_id: uuid, valid_time: Optional[int] = None):
     """
-    :param customer_id: we only use customer_id for the jwt token encoding # TODO: Research why can't I used email,
+    :param customer_id: we only use customer_id for the jwt token encoding # TODO: Research why can't I used email
     customer_id and language for the jwt token generation
     :param valid_time: by default our JWT token will be valid for 3 days (of courrse reduce it to 15
     minutes or something, keeping it for testing purpose)

@@ -78,6 +78,17 @@ docker-compose exec app bash
 poetry run pytest
 ```
 
+## TODOs
+1. Insert the data in the database using the compressed file instead of the uncompressed file 
+2. Handle each exception individually during data insertion
+3. Test what error you will receive when the input language is anything other than en or de
+4. Research the pool size of the database and what will be ideal in our use-case
+5. Generate the secure secret key using a cryptographic library or a password manager and also encode it using base64 encoding
+6. Research what other fields than customer_id we can use for jwt encoding
+7. Research which would be the best library for the password encryption
+8. Add rules for the accepted password when creating a new password 
+9. Research which is the best algorithm from encoding jwt key
+10. Use Enum for the language column in the customer table definition
 
 ## Further Improvements
 1. Write (more) tests
