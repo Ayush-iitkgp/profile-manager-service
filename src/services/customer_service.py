@@ -51,6 +51,7 @@ class CustomerService:
         except DoesNotExist:
             raise CustomerPasswordNotUpdatedError
 
+        await db.commit()
         return OutDataSetPasswordSchema(
             data=OutSetPasswordSchema(
                 message=f"Customer password has been set successfully for customer {password_data.email}."
@@ -70,7 +71,9 @@ class CustomerService:
             raise CustomerNotFoundError
         if customer.is_password_correct(password_data.password):
             return OutDataLoginSchema(
-                data=OutLoginSchema(customer_id=customer.id, language=customer.language)
+                data=OutLoginSchema(
+                    customer_id=str(customer.customer_id), language=customer.language
+                )
             )
         else:
             raise CustomerPasswordIncorrectError

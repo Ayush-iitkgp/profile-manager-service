@@ -6,6 +6,12 @@ from fastapi import FastAPI
 from src import settings
 from src.api.customer import router as customer_router
 
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+)
 logger = logging.getLogger(__name__)
 
 # Initialize FastAPI

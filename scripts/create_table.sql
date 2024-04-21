@@ -11,3 +11,5 @@ CREATE TABLE customer (
 CREATE INDEX idx_customers_email ON customer(email);
 
 SELECT COUNT(*) from customer;
+
+SELECT * from customer where email='osefhhchnsic@protonmail.com';

@@ -38,7 +38,8 @@ async def main():
                         logger.warning(f"{line} is not valid JSON")
                     except Exception:  # TODO: Handle each exception individually
                         logger.warning(
-                            f"Exception occurred for the record {line}", exc_info=True
+                            f"main: Exception occurred for the record {line}",
+                            exc_info=True,
                         )
         await db.commit()
 

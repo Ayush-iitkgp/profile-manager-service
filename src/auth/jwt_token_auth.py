@@ -40,7 +40,6 @@ class JWTBearer(HTTPBearer):
         except Exception:
             return None
 
-        # TODO: Improve this code
         customer_id = payload["customer_id"]
 
         customer = await self.get_customer_by_id(customer_id)
@@ -55,10 +54,12 @@ class JWTBearer(HTTPBearer):
     async def get_customer_by_id(self, customer_id: str):
         async with async_session() as db:
             try:
-                customer = CustomerRepository(db_session=db).get_by_customer_id(
+                customer = await CustomerRepository(db_session=db).get_by_customer_id(
                     customer_id=uuid.UUID(customer_id)
                 )
-                logger.info(f"Found customer with id: {customer_id}")
+                logger.info(
+                    f"get_customer_by_id: Found customer with id: {customer_id}"
+                )
             except DoesNotExist:
                 raise CustomerNotFoundError
             return customer
