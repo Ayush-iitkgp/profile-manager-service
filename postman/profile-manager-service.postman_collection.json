@@ -36,7 +36,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\": \"osefhhchnsic@protonmail.com\",\n    \"password\": \"1234\",\n    \"confirm_password\": \"1234\"\n}",
+					"raw": "{\n    \"email\": \"osefhhchnsic@protonmail.com\",\n    \"password\": \"123456\",\n    \"confirm_password\": \"123456\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -77,10 +77,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/v1/customer/create-password",
+							"raw": "localhost:3000/v1/customer/create-password",
 							"host": [
-								"{{baseUrl}}"
+								"localhost"
 							],
+							"port": "3000",
 							"path": [
 								"v1",
 								"customer",
@@ -186,7 +187,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\": \"osefhhchnsic@protonmail.com\",\n    \"password\": \"1234\"\n}",
+					"raw": "{\n    \"email\": \"osefhhchnsic@protonmail.com\",\n    \"password\": \"vfvfdvfdbdf\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -205,7 +206,211 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Successful login",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "client-version",
+								"value": "{{clientVersion}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"osefhhchnsic@protonmail.com\",\n    \"password\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/customer/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"customer",
+								"login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "date",
+							"value": "Sun, 21 Apr 2024 07:07:48 GMT"
+						},
+						{
+							"key": "server",
+							"value": "uvicorn"
+						},
+						{
+							"key": "content-length",
+							"value": "78"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"customerId\": \"06c2acac-7810-4dd8-8722-54bdb05fb9e4\",\n        \"language\": \"de\"\n    }\n}"
+				},
+				{
+					"name": "Incorrect password",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "client-version",
+								"value": "{{clientVersion}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"osefhhchnsic@protonmail.com\",\n    \"password\": \"vfvfdvfdbdf\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/customer/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"customer",
+								"login"
+							]
+						}
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "date",
+							"value": "Sun, 21 Apr 2024 07:08:32 GMT"
+						},
+						{
+							"key": "server",
+							"value": "uvicorn"
+						},
+						{
+							"key": "content-length",
+							"value": "31"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"detail\": \"Incorrect password\"\n}"
+				}
+			]
+		},
+		{
+			"name": "change-language",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "client-version",
+						"value": "{{clientVersion}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"customerId\": \"06c2acac-7810-4dd8-8722-54bdb05fb9e4\",\n    \"newLanguage\": \"fr\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/customer/change-language",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"customer",
+						"change-language"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Incorrect new language",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "client-version",
+								"value": "{{clientVersion}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"customerId\": \"06c2acac-7810-4dd8-8722-54bdb05fb9e4\",\n    \"newLanguage\": \"fr\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/customer/change-language",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"customer",
+								"change-language"
+							]
+						}
+					},
+					"status": "Unprocessable Entity",
+					"code": 422,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "date",
+							"value": "Sun, 21 Apr 2024 07:18:30 GMT"
+						},
+						{
+							"key": "server",
+							"value": "uvicorn"
+						},
+						{
+							"key": "content-length",
+							"value": "141"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"detail\": [\n        {\n            \"type\": \"enum\",\n            \"loc\": [\n                \"body\",\n                \"newLanguage\"\n            ],\n            \"msg\": \"Input should be 'en' or 'de'\",\n            \"input\": \"fr\",\n            \"ctx\": {\n                \"expected\": \"'en' or 'de'\"\n            }\n        }\n    ]\n}"
+				}
+			]
 		}
 	],
 	"auth": {
