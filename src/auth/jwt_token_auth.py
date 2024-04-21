@@ -2,12 +2,15 @@ import logging
 import uuid
 from typing import Optional
 
-from fastapi import Depends, HTTPException, Request, status
+from fastapi import HTTPException, Request, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from jose import jwt
 
 from src import settings
-from src.exceptions.core import HTTPForbiddenError, HTTPUnauthorizedError
+from src.db.errors import DoesNotExist
+from src.db.repositories.customer import CustomerRepository
+from src.db.session import async_session
+from src.exceptions.core import HTTPUnauthorizedError
 from src.exceptions.customer import CustomerNotFoundError
 from src.models.customer import CustomerSchema
 
@@ -38,27 +41,27 @@ class JWTBearer(HTTPBearer):
             return None
 
         # TODO: Improve this code
-        # customer_id = payload['customer_id']
+        customer_id = payload["customer_id"]
 
-        # customer = await self.get_customer_by_id(customer_id)
-        #
-        # if not customer:
-        #     raise HTTPException(
-        #         status_code=status.HTTP_403_FORBIDDEN,
-        #         detail="Invalid token or user not found.",
-        #     )
-        # return customer
+        customer = await self.get_customer_by_id(customer_id)
 
-    # async def get_customer_by_id(self, customer_id: str):
-    #     async with async_session():
-    #         try:
-    #             customer = CustomerRepository.get_by_customer_id(
-    #                 customer_id=uuid.UUID(customer_id)
-    #             )
-    #             logger.info(f"Found customer with id: {customer_id}")
-    #         except DoesNotExist:
-    #             raise CustomerNotFoundError
-    #         return customer
+        if not customer:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Invalid token or user not found.",
+            )
+        return customer
+
+    async def get_customer_by_id(self, customer_id: str):
+        async with async_session() as db:
+            try:
+                customer = CustomerRepository(db_session=db).get_by_customer_id(
+                    customer_id=uuid.UUID(customer_id)
+                )
+                logger.info(f"Found customer with id: {customer_id}")
+            except DoesNotExist:
+                raise CustomerNotFoundError
+            return customer
 
 
 jwt_token_auth = JWTBearer()
