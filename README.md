@@ -94,7 +94,7 @@ poetry run pytest
 1. Write (more) tests
 2. Implement git pre-commit hooks (DONE)
 3. Use alembic for database migration (it's not working at present)
-4. Set upo CI/CD Pipeline
+4. Set up CI/CD Pipeline
 5. Set up deployment
 
 ## Ideas to explore
