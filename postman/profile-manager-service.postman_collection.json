@@ -455,6 +455,10 @@
 		{
 			"key": "clientVersion",
 			"value": "2.1.1"
+		},
+		{
+			"key": "jwtToken",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcl9pZCI6IjA2YzJhY2FjLTc4MTAtNGRkOC04NzIyLTU0YmRiMDVmYjllNCIsImV4cCI6MTcxNDMwMjc1Mn0.PrGC9-1lfwVPmTkVIT9cJ4z-9nF78g4mm6quMeN6T3c"
 		}
 	]
 }
