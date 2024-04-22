@@ -78,6 +78,32 @@ docker-compose exec app bash
 poetry run pytest
 ```
 
+#### Testing the endpoint
+1. create-password
+```bash
+curl --location 'localhost:3000/v1/customer/create-password' \
+--header 'client-version: 2.1.1' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer {JWT_TOKEN}' \
+--data-raw '{
+    "email": "osefhhchnsic@protonmail.com",
+    "password": {PASSWORD},
+    "confirm_password": {PASSWORD}
+}'
+```
+
+2. login
+```bash
+curl --location 'localhost:3000/v1/customer/login' \
+--header 'client-version: 2.1.1' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "email": "osefhhchnsic@protonmail.com",
+    "password": "123456"
+}'
+```
+
+
 ## TODOs
 1. Insert the data in the database using the compressed file instead of the uncompressed file 
 2. Handle each exception individually during data insertion
@@ -89,6 +115,7 @@ poetry run pytest
 8. Add rules for the accepted password when creating a new password 
 9. Research which is the best algorithm from encoding jwt key
 10. Use Enum for the language column in the customer table definition
+11. Create Makefile for the docker deployment, database set up and data insertion
 
 ## Further Improvements
 1. Write (more) tests
