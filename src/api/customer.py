@@ -42,7 +42,7 @@ async def login(login_data: InLoginSchema) -> OutDataLoginSchema:
         return await CustomerService.verify_customer_login(db, login_data)
 
 
-@router.put(
+@router.patch(
     "/change-language",
     status_code=status.HTTP_200_OK,
     response_model=OutDataLoginSchema,

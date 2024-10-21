@@ -26,7 +26,7 @@ class JWTBearer(HTTPBearer):
             request=request
         )
         if not token:
-            return None
+            raise HTTPUnauthorizedError()
 
         try:
             payload = jwt.decode(
@@ -34,15 +34,15 @@ class JWTBearer(HTTPBearer):
             )
         except jwt.JWTError as e:
             raise HTTPUnauthorizedError() from e
-        except Exception:
-            return None
+        except Exception as e:
+            raise HTTPUnauthorizedError() from e
 
         customer_id = payload["customer_id"]
 
         customer = await self.get_customer_by_id(customer_id)
 
         if not customer:
-            raise HTTPUnauthorizedError
+            raise HTTPUnauthorizedError()
         return customer
 
     @staticmethod
