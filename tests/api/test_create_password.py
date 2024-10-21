@@ -1,5 +1,6 @@
 import pytest
 from httpx import AsyncClient
+from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
 from src.models.schema.in_customer import InSetPasswordSchema
@@ -8,7 +9,9 @@ pytestmark = pytest.mark.asyncio
 
 
 async def test_create_password_no_auth_forbidden_error(
-    async_client: AsyncClient, set_password_input: InSetPasswordSchema
+    async_client: AsyncClient,
+    set_password_input: InSetPasswordSchema,
+    db_session: AsyncSession,
 ) -> None:
     response = await async_client.post(
         "/v1/customer/create-password", json=set_password_input.dict()
@@ -18,7 +21,9 @@ async def test_create_password_no_auth_forbidden_error(
 
 
 async def test_create_password_only_jwt(
-    async_client_with_jwt: AsyncClient, set_password_input: InSetPasswordSchema
+    async_client_with_jwt: AsyncClient,
+    set_password_input: InSetPasswordSchema,
+    db_session: AsyncSession,
 ) -> None:
     response = await async_client_with_jwt.post(
         "/v1/customer/create-password", json=set_password_input.dict()
@@ -30,6 +35,7 @@ async def test_create_password_only_jwt(
 async def test_create_password_only_jwt_and_client_version(
     async_client_with_jwt_and_client_version: AsyncClient,
     set_password_input: InSetPasswordSchema,
+    db_session: AsyncSession,
 ) -> None:
     response = await async_client_with_jwt_and_client_version.post(
         "/v1/customer/create-password", data=set_password_input

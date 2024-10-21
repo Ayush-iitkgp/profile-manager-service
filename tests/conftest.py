@@ -9,7 +9,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src import settings
 from src.db.base_class import Base
-from src.db.repositories.customer import CustomerRepository
 from src.db.session import async_session, engine
 from src.models.customer import CustomerSchema
 from src.models.schema.in_customer import InSetPasswordSchema
@@ -27,7 +26,7 @@ def async_client(app: FastAPI) -> AsyncClient:
     return AsyncClient(app=app, base_url="http://testserver")
 
 
-@pytest.fixture(autouse=True, scope="session")
+@pytest.fixture
 async def db_session() -> AsyncSession:
     try:
         async with engine.begin() as connection:
@@ -100,16 +99,10 @@ def set_password_input(
     yield set_password_input
 
 
-@pytest.fixture(scope="session")
-def customer_repository(db_session: AsyncSession) -> CustomerRepository:
-    yield CustomerRepository(db_session)
-
-
-@pytest.fixture(scope="session")
-def generate_jwt_token(customer_factory: CustomerSchema, customer_repository) -> str:
-    payload = {"customer_id": str(customer_factory.customer_id)}
+@pytest.fixture
+def generate_jwt_token(customer_id: str) -> str:
+    payload = {"customer_id": str(customer_id)}
     token = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
-    customer_repository.create(customer_factory)
     yield token
 
 
