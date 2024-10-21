@@ -25,7 +25,8 @@ router = APIRouter(dependencies=[Depends(verify_client_version)])
     response_model=OutDataSetPasswordSchema,
 )
 async def create_password(
-    _: Depends(jwt_token_auth), password_data: InSetPasswordSchema
+    password_data: InSetPasswordSchema,
+    _=Depends(jwt_token_auth),
 ) -> OutDataSetPasswordSchema:
     async with async_session() as db:
         return await CustomerService.set_customer_password(db, password_data)
@@ -48,7 +49,7 @@ async def login(login_data: InLoginSchema) -> OutDataLoginSchema:
 )
 async def change_language(
     request_data: InChangePasswordSchema,
-    _client_verified: None = Depends(verify_client_version),
+    _client_verified: None = Depends(jwt_token_auth),
 ) -> OutDataChangePasswordSchema:
     async with async_session() as db:
         return await CustomerService.change_customer_language(db, request_data)

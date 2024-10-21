@@ -86,7 +86,7 @@ async def set_password_input(
     email: str, password: str, confirmed_password: str
 ) -> InSetPasswordSchema:
     set_password_input = InSetPasswordSchema(
-        email="osefhhchnsic@protonmail.com",
+        email=email,
         password=password,
         confirm_password=confirmed_password,
     )
