@@ -1,12 +1,14 @@
 import uuid
-from typing import AsyncGenerator
 
 import pytest
 from fastapi import FastAPI
 from httpx import AsyncClient
+from jose import jwt
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from src import settings
 from src.db.base_class import Base
+from src.db.repositories.customer import CustomerRepository
 from src.db.session import async_session, engine
 from src.models.customer import CustomerSchema
 from src.models.schema.in_customer import InSetPasswordSchema
@@ -19,8 +21,8 @@ def app() -> FastAPI:
     return app
 
 
-@pytest.fixture
-async def async_client(app: FastAPI) -> AsyncGenerator:
+@pytest.fixture(scope="session")
+async def async_client(app: FastAPI) -> AsyncClient:
     async with AsyncClient(app=app, base_url="http://localhost:3000") as ac:
         yield ac
 
@@ -89,3 +91,34 @@ async def set_password_input(
         confirm_password=confirmed_password,
     )
     yield set_password_input
+
+
+@pytest.fixture(scope="session")
+def customer_repository(db: AsyncSession) -> CustomerRepository:
+    yield CustomerRepository(db)
+
+
+@pytest.fixture(scope="session")
+async def generate_jwt_token(customer_id: uuid.UUID) -> str:
+    payload = {"customer_id": str(customer_id)}
+    token = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
+    return token
+
+
+@pytest.fixture(scope="session")
+async def async_client_with_jwt(async_client, generate_jwt_token) -> AsyncClient:
+    async_client.headers["Authorization"] = f"Bearer {generate_jwt_token}"
+    yield async_client
+
+
+@pytest.fixture(scope="session")
+async def client_version() -> str:
+    yield "2.1.1"
+
+
+@pytest.fixture(scope="session")
+async def async_client_with_jwt_and_client_version(
+    async_client_with_jwt, client_version
+) -> AsyncClient:
+    async_client_with_jwt.headers["client-version"] = client_version
+    yield async_client_with_jwt
