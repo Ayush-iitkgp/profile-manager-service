@@ -2,7 +2,7 @@ import logging
 import uuid
 from typing import Optional, Type
 
-from fastapi import HTTPException, Request, status
+from fastapi import Request
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from jose import jwt
 
@@ -42,10 +42,7 @@ class JWTBearer(HTTPBearer):
         customer = await self.get_customer_by_id(customer_id)
 
         if not customer:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="Invalid token or user not found.",
-            )
+            raise HTTPUnauthorizedError
         return customer
 
     @staticmethod
