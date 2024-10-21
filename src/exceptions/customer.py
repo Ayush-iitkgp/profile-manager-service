@@ -13,7 +13,15 @@ class CustomerError(BaseError):
 class CustomerNotFoundError(CustomerError):
     def __init__(self):
         super().__init__(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Customer not found"
+            status_code=status.HTTP_404_NOT_FOUND, detail="Customer Not Found"
+        )
+
+
+class CustomerIncorrectUsernameOrPasswordError(CustomerError):
+    def __init__(self):
+        super().__init__(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Incorrect username or password",
         )
 
 

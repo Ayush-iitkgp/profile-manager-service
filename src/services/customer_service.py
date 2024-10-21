@@ -5,8 +5,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.db.errors import DoesNotExist
 from src.db.repositories.customer import CustomerRepository
 from src.exceptions.customer import (
+    CustomerIncorrectUsernameOrPasswordError,
     CustomerNotFoundError,
-    CustomerPasswordIncorrectError,
     CustomerPasswordNotUpdatedError,
 )
 from src.models.schema.in_customer import (
@@ -67,8 +67,8 @@ class CustomerService:
         customer_repository = CustomerRepository(db_session=db)
         try:
             customer = await customer_repository.get_by_email(email=password_data.email)
-        except DoesNotExist:
-            raise CustomerNotFoundError
+        except DoesNotExist as e:
+            raise CustomerIncorrectUsernameOrPasswordError() from e
         if customer.is_password_correct(password_data.password):
             return OutDataLoginSchema(
                 data=OutLoginSchema(
@@ -76,7 +76,7 @@ class CustomerService:
                 )
             )
         else:
-            raise CustomerPasswordIncorrectError
+            raise CustomerIncorrectUsernameOrPasswordError()
 
     @classmethod
     async def change_customer_language(
