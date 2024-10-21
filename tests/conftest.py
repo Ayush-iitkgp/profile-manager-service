@@ -36,20 +36,56 @@ async def db_session() -> AsyncSession:
         await session.rollback()
 
 
-@pytest.fixture()
-async def customer_factory() -> CustomerSchema:
+@pytest.fixture(scope="session")
+async def customer_id() -> uuid.UUID:
+    yield uuid.UUID("06c2acac-7810-4dd8-8722-54bdb05fb9e4")
+
+
+@pytest.fixture(scope="session")
+async def email() -> str:
+    yield "osefhhchnsic@protonmail.com"
+
+
+@pytest.fixture(scope="session")
+async def country() -> str:
+    yield "DE"
+
+
+@pytest.fixture(scope="session")
+async def language() -> str:
+    yield "de"
+
+
+@pytest.fixture(scope="session")
+async def customer_factory(
+    customer_id: uuid.UUID, email: str, country: str, language: str
+) -> CustomerSchema:
     customer = CustomerSchema(
-        customer_id=uuid.UUID("06c2acac-7810-4dd8-8722-54bdb05fb9e4"),
-        email="osefhhchnsic@protonmail.com",
-        country="DE",
-        language="de",
+        customer_id=customer_id,
+        email=email,
+        country=country,
+        language=email,
     )
     yield customer
 
 
+@pytest.fixture(scope="session")
+async def password() -> str:
+    yield "1234"
+
+
+@pytest.fixture(scope="session")
+async def confirmed_password(password: str) -> str:
+    yield password
+
+
 @pytest.fixture()
-async def set_password_input() -> InSetPasswordSchema:
+async def set_password_input(
+    email: str, password: str, confirmed_password: str
+) -> InSetPasswordSchema:
     set_password_input = InSetPasswordSchema(
-        email="osefhhchnsic@protonmail.com", password="1234", confirm_password="1234"
+        email="osefhhchnsic@protonmail.com",
+        password=password,
+        confirm_password=confirmed_password,
     )
     yield set_password_input

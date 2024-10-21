@@ -1,6 +1,6 @@
 import logging
 import uuid
-from typing import Optional
+from typing import Optional, Type
 
 from fastapi import HTTPException, Request, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
@@ -19,12 +19,9 @@ logger = logging.getLogger(__name__)
 
 class JWTBearer(HTTPBearer):
     def __init__(self):
-        super().__init__(
-            scheme_name="Firebase ID Token",
-            auto_error=False,
-        )
+        super().__init__(scheme_name="JWT Token")
 
-    async def __call__(self, request: Request) -> Optional[CustomerSchema]:
+    async def __call__(self, request: Request) -> Optional[Type[CustomerSchema]]:
         token: Optional[HTTPAuthorizationCredentials] = await super().__call__(
             request=request
         )
@@ -51,7 +48,8 @@ class JWTBearer(HTTPBearer):
             )
         return customer
 
-    async def get_customer_by_id(self, customer_id: str):
+    @staticmethod
+    async def get_customer_by_id(customer_id: str) -> Type[CustomerSchema]:
         async with async_session() as db:
             try:
                 customer = await CustomerRepository(db_session=db).get_by_customer_id(

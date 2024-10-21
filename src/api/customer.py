@@ -16,44 +16,38 @@ from src.models.schema.out_customer import (
 )
 from src.services.customer_service import CustomerService
 
-router = APIRouter()
+router = APIRouter(dependencies=[Depends(verify_client_version)])
 
 
 @router.post(
-    "/create-password/",
+    "/create-password",
     status_code=status.HTTP_201_CREATED,
     response_model=OutDataSetPasswordSchema,
 )
 async def create_password(
-    password_data: InSetPasswordSchema,
-    _: str = Depends(jwt_token_auth),
-    _client_verified: None = Depends(verify_client_version),
+    _: Depends(jwt_token_auth), password_data: InSetPasswordSchema
 ) -> OutDataSetPasswordSchema:
     async with async_session() as db:
         return await CustomerService.set_customer_password(db, password_data)
 
 
 @router.post(
-    "/login/",
+    "/login",
     status_code=status.HTTP_200_OK,
     response_model=OutDataLoginSchema,
 )
-async def login(
-    login_data: InLoginSchema,
-    _client_verified: None = Depends(verify_client_version),
-) -> OutDataLoginSchema:
+async def login(login_data: InLoginSchema) -> OutDataLoginSchema:
     async with async_session() as db:
         return await CustomerService.verify_customer_login(db, login_data)
 
 
 @router.put(
-    "/change-language/",
+    "/change-language",
     status_code=status.HTTP_200_OK,
     response_model=OutDataLoginSchema,
 )
 async def change_language(
     request_data: InChangePasswordSchema,
-    _: str = Depends(jwt_token_auth),
     _client_verified: None = Depends(verify_client_version),
 ) -> OutDataChangePasswordSchema:
     async with async_session() as db:
