@@ -38,7 +38,7 @@ async def test_create_password_only_jwt_and_client_version(
     db_session: AsyncSession,
 ) -> None:
     response = await async_client_with_jwt_and_client_version.post(
-        "/v1/customer/create-password", data=set_password_input
+        "/v1/customer/create-password", json=set_password_input.dict()
     )
     assert response.status_code == status.HTTP_201_CREATED
     assert response.json() == {"detail": "Not authenticated"}
