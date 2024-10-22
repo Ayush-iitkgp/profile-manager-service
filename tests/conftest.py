@@ -84,7 +84,7 @@ def customer_factory(
         language=language,
         hashed_password=hashed_password,
     )
-    yield customer
+    return customer
 
 
 @pytest.fixture

@@ -3,6 +3,7 @@ from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
+from src.models.customer import CustomerSchema
 from src.models.schema.in_customer import InSetPasswordSchema
 
 pytestmark = pytest.mark.asyncio
@@ -20,11 +21,14 @@ async def test_create_password_no_auth_forbidden_error(
     assert response.json() == {"detail": "Not authenticated"}
 
 
-async def test_create_password_only_jwt(
+async def test_create_password_only_jwt_unauthorized_error(
     async_client_with_jwt: AsyncClient,
     set_password_input: InSetPasswordSchema,
+    customer_factory: CustomerSchema,
     db_session: AsyncSession,
 ) -> None:
+    db_session.add(customer_factory)
+    await db_session.commit()
     response = await async_client_with_jwt.post(
         "/v1/customer/create-password", json=set_password_input.dict()
     )
